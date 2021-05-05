@@ -2,8 +2,9 @@
 , gtkspell2, aspell
 , gst_all_1, startupnotification, gettext
 , perlPackages, libxml2, nss, nspr, farstream
-, libXScrnSaver, ncurses, avahi, dbus, dbus-glib, intltool, libidn
+, libXScrnSaver, avahi, dbus, dbus-glib, intltool, libidn
 , lib, python, libICE, libXext, libSM
+, libgnt, ncurses
 , cyrus_sasl ? null
 , openssl ? null
 , gnutls ? null
@@ -16,11 +17,11 @@
 let unwrapped = stdenv.mkDerivation rec {
   pname = "pidgin";
   majorVersion = "2";
-  version = "${majorVersion}.13.0";
+  version = "${majorVersion}.14.4";
 
   src = fetchurl {
     url = "mirror://sourceforge/pidgin/${pname}-${version}.tar.bz2";
-    sha256 = "13vdqj70315p9rzgnbxjp9c51mdzf1l4jg1kvnylc4bidw61air7";
+    sha256 = "sha256-Z8GgEEsGJKUBAMbXPNVQTVPJ0iGSKxso+oYCBTGpkE4=";
   };
 
   inherit nss ncurses;
@@ -35,9 +36,10 @@ let unwrapped = stdenv.mkDerivation rec {
     aspell startupnotification
     gst_all_1.gstreamer gst_all_1.gst-plugins-base gst_all_1.gst-plugins-good
     libxml2 nss nspr
-    libXScrnSaver ncurses python-with-dbus
+    libXScrnSaver python-with-dbus
     avahi dbus dbus-glib intltool libidn
     libICE libXext libSM cyrus_sasl
+    libgnt ncurses # optional: build finch - the console UI
   ]
   ++ (lib.optional (openssl != null) openssl)
   ++ (lib.optional (gnutls != null) gnutls)
@@ -62,6 +64,7 @@ let unwrapped = stdenv.mkDerivation rec {
     "--disable-meanwhile"
     "--disable-nm"
     "--disable-tcl"
+    "--disable-gevolution"
   ]
   ++ (lib.optionals (cyrus_sasl != null) [ "--enable-cyrus-sasl=yes" ])
   ++ (lib.optionals (gnutls != null) ["--enable-gnutls=yes" "--enable-nss=no"])
@@ -77,7 +80,7 @@ let unwrapped = stdenv.mkDerivation rec {
   doInstallCheck = stdenv.hostPlatform == stdenv.buildPlatform;
   # In particular, this detects missing python imports in some of the tools.
   postInstallCheck = ''
-    for f in "''${!outputBin}"/bin/{purple-remote,pidgin}; do
+    for f in "''${!outputBin}"/bin/{finch,pidgin}; do
       echo "Testing: $f --help"
       "$f" --help
     done
