@@ -177,6 +177,18 @@ in {
         description = "Whether to use socket activation to start IPFS when needed.";
       };
 
+      recommendedSysctlSetting= mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Increase the UDP receive buffer size.
+          This allows faster QUIC transfers on high-bandhwidth connections.
+          Fixes a warning printed by IPFS:
+          "failed to sufficiently increase receive buffer size
+          (was: 208 kiB, wanted: 2048 kiB, got: 416 kiB).
+          See https://github.com/lucas-clemente/quic-go/wiki/UDP-Receive-Buffer-Size for details."
+        '';
+      };
     };
   };
 
@@ -281,5 +293,8 @@ in {
         in [ "" "%t/ipfs.sock" ] ++ lib.optional (fromCfg != null) fromCfg;
     };
 
+    boot.kernel.sysctl = mkIf cfg.recommendedSysctlSetting {
+      "net.core.rmem_max" = 2500000;
+    };
   };
 }

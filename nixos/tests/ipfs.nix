@@ -10,6 +10,7 @@ import ./make-test-python.nix ({ pkgs, ...} : {
       # Also will add a unix domain socket socket API address, see module.
       startWhenNeeded = true;
       apiAddress = "/ip4/127.0.0.1/tcp/2324";
+      recommendedSysctlSetting = true; # Avoid printing warning
     };
   };
 
