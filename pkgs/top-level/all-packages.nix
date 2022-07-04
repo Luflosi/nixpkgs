@@ -893,8 +893,10 @@ with pkgs;
 
   fetchRepoProject = callPackage ../build-support/fetchrepoproject { };
 
-  fetchipfs = import ../build-support/fetchipfs {
+  fetchipfs = callPackage ../build-support/fetchipfs {
     inherit curl stdenv;
+  } // {
+    tests = pkgs.tests.fetchipfs;
   };
 
   fetchit = callPackage ../applications/networking/cluster/fetchit { };

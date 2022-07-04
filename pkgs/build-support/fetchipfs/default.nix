@@ -15,6 +15,8 @@
 , port           ? "8080"
 , postFetch      ? ""
 , preferLocalBuild ? true
+, name ? null
+, ...
 }:
 
 let
@@ -25,7 +27,7 @@ let
 in
 
 if (!hasHash) then throw "Specify sha for fetchipfs fixed-output derivation" else stdenv.mkDerivation {
-  name = ipfs;
+  name = if name == null then ipfs else name;
   builder = ./builder.sh;
   nativeBuildInputs = [ curl ];
 
