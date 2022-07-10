@@ -1,6 +1,6 @@
 { stdenv, lib, fetchFromGitHub, fetchurl
 , clang-tools, cmake, bzip2, zlib, expat, boost, git, pandoc, gzip
-, postgresql_12
+, postgresql
 , python3, python3Packages, php
 }:
 
@@ -36,21 +36,19 @@ stdenv.mkDerivation rec {
     zlib
     expat
     boost
-    python3
+    (python3.withPackages (python-packages: with python-packages; [
+      pyyaml
+      python-dotenv
+      psycopg2
+      psutil
+      jinja2
+      PyICU
+      datrie
+    ]))
     # python3Packages.pylint  # We don't want to run pylint because the package could break on pylint bumps which is really annoying.
     # python3Packages.pytest  # disabled since I can't get it to run tests anyway
     # python3Packages.behave  # disabled since I can't get it to run tests anyway
-    postgresql_12
-  ];
-
-  propagatedBuildInputs = with python3Packages; [
-    pyyaml
-    python-dotenv
-    psycopg2
-    psutil
-    jinja2
-    PyICU
-    datrie
+    postgresql
   ];
 
   postPatch = ''
@@ -63,6 +61,6 @@ stdenv.mkDerivation rec {
     homepage = "https://nominatim.org/";
     license = licenses.gpl2Plus;
     platforms = platforms.unix;
-    maintainers = [ maintainers.mausch ];
+    maintainers = with maintainers; [ mausch Luflosi ];
   };
 }
