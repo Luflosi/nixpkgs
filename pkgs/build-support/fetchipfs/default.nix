@@ -19,6 +19,10 @@
 , ...
 }:
 
+# TODO: impureEnvVars = lib.fetchers.proxyImpureEnvVars ++ [
+# TODO: just fall back to fetchurl instead of implementing it ourselves
+# TODO: allow changing the IPFS API IP/Port
+
 let
 
   hasHash = (outputHash != "" && outputHashAlgo != "")

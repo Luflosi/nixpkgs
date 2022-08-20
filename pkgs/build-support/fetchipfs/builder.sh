@@ -7,17 +7,17 @@ source $stdenv/setup
 
 set -o noglob
 
-curl="curl            \
- --location           \
- --max-redirs 20      \
- --retry 2            \
- --disable-epsv       \
+curl="curl \
+ --location \
+ --max-redirs 20 \
+ --retry 2 \
+ --disable-epsv \
  --cookie-jar cookies \
- --insecure           \
- --speed-time 5       \
- -#                   \
- --fail               \
- $curlOpts            \
+ --insecure \
+ --speed-time 5 \
+ --progress-bar \
+ --fail \
+ $curlOpts \
  $NIX_CURL_FLAGS"
 
 finish() {
@@ -29,7 +29,7 @@ finish() {
 ipfs_add() {
     if curl --retry 0 --head --silent "localhost:5001" > /dev/null; then
         echo "[0m[01;36m=IPFS=[0m add $ipfs"
-        tar --owner=root --group=root -cWf "source.tar" $(echo *)
+        tar -cWf "source.tar" *
         res=$(curl -# -F "file=@source.tar" "localhost:5001/api/v0/tar/add" | sed 's/.*"Hash":"\(.*\)".*/\1/')
         if [ $ipfs != $res ]; then
             echo "\`ipfs tar add' results in $res when $ipfs is expected"
@@ -69,11 +69,17 @@ if test -n "$url"; then
         # keep this inside an if statement, since on failure it doesn't abort the script
         if $curl "$url" -O; then
             set +o noglob
-            tmpfile=$(echo *)
-            unpackFile $tmpfile
-            rm $tmpfile
+            rm cookies
+            downloadedFile="$(echo *)"
+            renamed="$TMPDIR/TODO.tar.gz"
+            mv "$downloadedFile" "$renamed"
+            #echo '>'$downloadedFile'<'
+            unpackFile "$renamed"
+            echo '>'$renamed'<'
+            rm "$renamed"
             ipfs_add
-            mv $(echo *) "$out"
+            mv * "$out"
+            #touch "$out/bla"
             finish
         else
             curlexit=$?;

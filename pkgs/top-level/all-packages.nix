@@ -893,9 +893,9 @@ with pkgs;
 
   fetchRepoProject = callPackage ../build-support/fetchrepoproject { };
 
-  fetchipfs = callPackage ../build-support/fetchipfs {
+  fetchipfs = (callPackage ../build-support/fetchipfs {
     inherit curl stdenv;
-  } // {
+  }) // {
     tests = pkgs.tests.fetchipfs;
   };
 
