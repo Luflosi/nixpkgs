@@ -40358,6 +40358,8 @@ with pkgs;
 
   bootil = callPackage ../development/libraries/bootil { };
 
+  boswatch3 = callPackage ../development/python-modules/boswatch3 { };
+
   brgenml1lpr = pkgsi686Linux.callPackage ../misc/cups/drivers/brgenml1lpr { };
 
   brgenml1cupswrapper = callPackage ../misc/cups/drivers/brgenml1cupswrapper { };
