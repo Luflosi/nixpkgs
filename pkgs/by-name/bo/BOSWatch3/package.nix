@@ -43,8 +43,8 @@ buildPythonApplication rec {
 
   disabledTests = [
     # requires network access
-    #"test_serverClientFetchConnInfo"
-    #"test_clientWithoutServer"
+    "test_serverClientFetchConnInfo"
+    "test_clientWithoutServer"
   ];
 
   meta = with lib; {
