@@ -5,7 +5,7 @@
 
 with python3Packages;
 buildPythonApplication rec {
-  pname = "boswatch3";
+  pname = "BOSWatch3";
   version = "unstable-2023-01-24";
   format = "other";
 
