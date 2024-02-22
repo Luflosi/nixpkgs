@@ -10,10 +10,11 @@ let
     name = "sm.puri.OSK0";
     desktopName = "On-screen keyboard";
     exec = "${pkgs.squeekboard}/bin/squeekboard";
-    categories = [ "GNOME" "Core" ];
-    onlyShowIn = [ "GNOME" ];
+    categories = [ "GTK" "GNOME" "Core" ];
+    onlyShowIn = [ "X-Phosh" "GNOME" ];
     noDisplay = true;
     extraConfig = {
+      X-Phosh-UsesFeedback = "true";
       X-GNOME-Autostart-Phase = "Panel";
       X-GNOME-Provides = "inputmethod";
       X-GNOME-Autostart-Notify = "true";
