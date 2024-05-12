@@ -58,7 +58,7 @@ let
   confFile = pkgs.writeText "named.conf"
     ''
       controls {
-        unix /run/named/control perm 0440 owner ${bindUser} group ${bindUser};
+        unix "/run/named/control" perm 0440 owner 53 group 53;
       };
 
       acl cachenetworks { ${concatMapStrings (entry: " ${entry}; ") cfg.cacheNetworks} };
