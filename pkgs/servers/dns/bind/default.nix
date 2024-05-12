@@ -67,11 +67,8 @@ stdenv.mkDerivation rec {
     done
 
     cat <<EOF >$out/etc/rndc.conf
-    include "/etc/bind/rndc.key";
     options {
-        default-key "rndc-key";
-        default-server 127.0.0.1;
-        default-port 953;
+        default-server /run/named/control;
     };
     EOF
   '';

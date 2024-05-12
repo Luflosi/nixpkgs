@@ -57,9 +57,8 @@ let
 
   confFile = pkgs.writeText "named.conf"
     ''
-      include "/etc/bind/rndc.key";
       controls {
-        inet 127.0.0.1 allow {localhost;} keys {"rndc-key";};
+        unix /run/named/control perm 0440 owner ${bindUser} group ${bindUser};
       };
 
       acl cachenetworks { ${concatMapStrings (entry: " ${entry}; ") cfg.cacheNetworks} };
@@ -258,11 +257,6 @@ in
       wantedBy = [ "multi-user.target" ];
 
       preStart = ''
-        mkdir -m 0755 -p /etc/bind
-        if ! [ -f "/etc/bind/rndc.key" ]; then
-          ${bindPkg.out}/sbin/rndc-confgen -c /etc/bind/rndc.key -u ${bindUser} -a -A hmac-sha256 2>/dev/null
-        fi
-
         ${pkgs.coreutils}/bin/mkdir -p /run/named
         chown ${bindUser} /run/named
 
@@ -274,8 +268,8 @@ in
         # Set type to forking, see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=900788
         Type = "forking";
         ExecStart = "${bindPkg.out}/sbin/named -u ${bindUser} ${optionalString cfg.ipv4Only "-4"} -c ${cfg.configFile}";
-        ExecReload = "${bindPkg.out}/sbin/rndc -k '/etc/bind/rndc.key' reload";
-        ExecStop = "${bindPkg.out}/sbin/rndc -k '/etc/bind/rndc.key' stop";
+        ExecReload = "${bindPkg.out}/sbin/rndc reload";
+        ExecStop = "${bindPkg.out}/sbin/rndc stop";
       };
 
       unitConfig.Documentation = "man:named(8)";
