@@ -57,8 +57,9 @@ let
 
   confFile = pkgs.writeText "named.conf"
     ''
+      include "/etc/bind/rndc.key";
       controls {
-        unix "/run/named/control" perm 0440 owner 53 group 53;
+        inet 127.0.0.1 allow {localhost;} keys {"rndc-key";};
       };
 
       acl cachenetworks { ${concatMapStrings (entry: " ${entry}; ") cfg.cacheNetworks} };
@@ -257,6 +258,13 @@ in
       wantedBy = [ "multi-user.target" ];
 
       preStart = ''
+        #mkdir -m 0755 -p /etc/bind
+        #if ! [ -f "/etc/bind/rndc.key" ]; then
+        #  ls -la /etc/bind
+        #  (umask 0027 && ${bindPkg.out}/sbin/rndc-confgen -c /etc/bind/rndc.key -u ${bindUser} -a -A hmac-sha256 2>/dev/null)
+        #  ls -la /etc/bind
+        #fi
+
         ${pkgs.coreutils}/bin/mkdir -p /run/named
         chown ${bindUser} /run/named
 
