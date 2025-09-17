@@ -2,6 +2,7 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
+  nix-update-script,
 }:
 
 buildGoModule rec {
@@ -23,6 +24,8 @@ buildGoModule rec {
   '';
 
   doCheck = false;
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "Retrieve files over IPFS and save them locally";
