@@ -22,6 +22,7 @@
   armTrustedFirmwareAllwinner,
   armTrustedFirmwareAllwinnerH6,
   armTrustedFirmwareAllwinnerH616,
+  armTrustedFirmwareK3,
   armTrustedFirmwareRK3328,
   armTrustedFirmwareRK3399,
   armTrustedFirmwareRK3568,
@@ -823,6 +824,21 @@ in
       broken = true; # too big, exceeds partition size
     };
     filesToInstall = [ "u-boot.kwb" ];
+  };
+
+  ubootSMARC-sAM67 = buildUBoot {
+    src = fetchFromGitHub {
+      owner = "kontron";
+      repo = "u-boot-smarc-sam67";
+      rev = "259a4765c26babb81a522edcfde8f14f41534ea6";
+      hash = "sha256-SZd0TBp9pb8i9GcaohWWs8Pk7EEYQ5d4f9YdyxPFBkw=";
+    };
+    version = "0-unstable-todo";
+    defconfig = "kontron_sa67_a53_defconfig";
+    extraMeta.platforms = [ "aarch64-linux" ];
+    BL31 = "${armTrustedFirmwareK3}/bl31.bin";
+    TEE = "TODO";
+    filesToInstall = [ "tispl.bin" "u-boot.img" ];
   };
 
   ubootSopine = buildUBoot {

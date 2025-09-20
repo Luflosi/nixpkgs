@@ -123,4 +123,10 @@ in
     extraMakeFlags = [ "PLATFORM_FLAVOR=qemu_armv8a" ];
     extraMeta.platforms = [ "aarch64-linux" ];
   };
+
+  opteeTodo = buildOptee {
+    platform = "ti";
+    extraMakeFlags = [ "PLATFORM_FLAVOR=am57xx" ];
+    extraMeta.platforms = [ "armv7l-linux" ];
+  };
 }

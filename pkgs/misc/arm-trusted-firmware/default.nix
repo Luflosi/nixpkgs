@@ -161,6 +161,12 @@ in
     filesToInstall = [ "build/${platform}/release/bl31.bin" ];
   };
 
+  armTrustedFirmwareK3 = buildArmTrustedFirmware rec {
+    platform = "k3";
+    extraMeta.platforms = [ "aarch64-linux" ];
+    filesToInstall = [ "build/${platform}/generic/release/bl31.bin" ];
+  };
+
   armTrustedFirmwareQemu = buildArmTrustedFirmware rec {
     platform = "qemu";
     extraMeta.platforms = [ "aarch64-linux" ];

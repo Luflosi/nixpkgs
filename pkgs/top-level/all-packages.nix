@@ -6957,6 +6957,7 @@ with pkgs;
     buildOptee
     opteeQemuArm
     opteeQemuAarch64
+    opteeTodo
     ;
 
   patchelf = callPackage ../development/tools/misc/patchelf { };
@@ -10228,6 +10229,7 @@ with pkgs;
     armTrustedFirmwareAllwinner
     armTrustedFirmwareAllwinnerH616
     armTrustedFirmwareAllwinnerH6
+    armTrustedFirmwareK3
     armTrustedFirmwareQemu
     armTrustedFirmwareRK3328
     armTrustedFirmwareRK3399
@@ -10720,6 +10722,7 @@ with pkgs;
     ubootRockPro64
     ubootROCPCRK3399
     ubootSheevaplug
+    ubootSMARC-sAM67
     ubootSopine
     ubootTuringRK1
     ubootUtilite
