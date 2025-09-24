@@ -10722,6 +10722,8 @@ with pkgs;
     ubootRockPro64
     ubootROCPCRK3399
     ubootSheevaplug
+    ubootSMARC-sAM67-K3
+    ubootSMARC-sAM67-R5
     ubootSMARC-sAM67
     ubootSopine
     ubootTuringRK1

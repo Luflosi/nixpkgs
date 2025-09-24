@@ -97,6 +97,7 @@ let
 
         hardeningDisable = [ "all" ];
         dontStrip = true;
+        enableParallelBuilding = true;
 
         # breaks secondary CPU bringup on at least RK3588, maybe others
         env.NIX_CFLAGS_COMPILE = "-fomit-frame-pointer";

@@ -5,8 +5,10 @@
   bison,
   dtc,
   fetchFromGitHub,
+  fetchgit,
   fetchpatch,
   fetchurl,
+  symlinkJoin,
   flex,
   gnutls,
   installShellFiles,
@@ -165,6 +167,48 @@ let
       ]
     )
   );
+
+  ubootSMARC-sAM67-K3 = buildUBoot {
+    src = fetchFromGitHub {
+      owner = "kontron";
+      repo = "u-boot-smarc-sam67";
+      rev = "259a4765c26babb81a522edcfde8f14f41534ea6";
+      hash = "sha256-SZd0TBp9pb8i9GcaohWWs8Pk7EEYQ5d4f9YdyxPFBkw=";
+    };
+    version = "0-unstable-todo";
+    defconfig = "kontron_sa67_a53_defconfig";
+    extraMeta.platforms = [ "aarch64-linux" ];
+    BINMAN_INDIRS = fetchgit {
+      url = "https://git.ti.com/git/processor-firmware/ti-linux-firmware.git";
+      tag = "11.01.14";
+      hash = "sha256-zEfDtjuW9kFIAWshHLWnaR7/5F2LpPD6PhfDop0G9K8=";
+      sparseCheckout = [ "ti-dm/j722s/ipc_echo_testb_mcu1_0_release_strip.xer5f" ];
+    };
+    BL31 = "${armTrustedFirmwareK3}/bl31.bin";
+    TEE = ./tee-raw.bin;
+    filesToInstall = [ "tispl.bin" "u-boot.img" ];
+  };
+
+  ubootSMARC-sAM67-R5 = buildUBoot {
+    inherit (ubootSMARC-sAM67-K3) src version;
+    defconfig = "kontron_sa67_r5_defconfig";
+    extraMeta.platforms = [ "armv7l-linux" ]; # TODO: Should we be using armv7r-linux instead?
+    BINMAN_INDIRS = fetchgit {
+      url = ubootSMARC-sAM67-K3.BINMAN_INDIRS.url;
+      tag = "11.01.14";
+      hash = "";
+      sparseCheckout = [ "TODO" ];
+    };
+    filesToInstall = [ "tiboot3.bin" ];
+  };
+
+  ubootSMARC-sAM67 = symlinkJoin {
+    name = "ubootSMARC-sAM67";
+    paths = [
+      ubootSMARC-sAM67-K3
+      ubootSMARC-sAM67-R5
+    ];
+  };
 in
 {
   inherit buildUBoot;
@@ -826,20 +870,10 @@ in
     filesToInstall = [ "u-boot.kwb" ];
   };
 
-  ubootSMARC-sAM67 = buildUBoot {
-    src = fetchFromGitHub {
-      owner = "kontron";
-      repo = "u-boot-smarc-sam67";
-      rev = "259a4765c26babb81a522edcfde8f14f41534ea6";
-      hash = "sha256-SZd0TBp9pb8i9GcaohWWs8Pk7EEYQ5d4f9YdyxPFBkw=";
-    };
-    version = "0-unstable-todo";
-    defconfig = "kontron_sa67_a53_defconfig";
-    extraMeta.platforms = [ "aarch64-linux" ];
-    BL31 = "${armTrustedFirmwareK3}/bl31.bin";
-    TEE = "TODO";
-    filesToInstall = [ "tispl.bin" "u-boot.img" ];
-  };
+  inherit
+    ubootSMARC-sAM67-K3
+    ubootSMARC-sAM67-R5
+    ubootSMARC-sAM67;
 
   ubootSopine = buildUBoot {
     defconfig = "sopine_baseboard_defconfig";
