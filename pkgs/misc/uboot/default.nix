@@ -189,8 +189,8 @@ let
       hash = "sha256-zEfDtjuW9kFIAWshHLWnaR7/5F2LpPD6PhfDop0G9K8=";
       sparseCheckout = [ "ti-dm/j722s/ipc_echo_testb_mcu1_0_release_strip.xer5f" ];
     };
-    BL31 = ./bl31.bin;
-    # TEE = ./tee-raw.bin; # TODO: build from source
+    # BL31 = ./bl31.bin;
+    BL31 = "${armTrustedFirmwareK3}/bl31.bin";
     TEE = "${opteeK3am62x}/tee-raw.bin";
     filesToInstall = [ "tispl.bin" "u-boot.img" ];
     # TODO: mention that you need the other u-boot as well in a longDescription
