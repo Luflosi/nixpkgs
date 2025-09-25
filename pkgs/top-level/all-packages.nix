@@ -6957,7 +6957,7 @@ with pkgs;
     buildOptee
     opteeQemuArm
     opteeQemuAarch64
-    opteeK3am62x
+    opteeK3AM62x
     ;
 
   patchelf = callPackage ../development/tools/misc/patchelf { };
@@ -10229,7 +10229,7 @@ with pkgs;
     armTrustedFirmwareAllwinner
     armTrustedFirmwareAllwinnerH616
     armTrustedFirmwareAllwinnerH6
-    armTrustedFirmwareK3
+    armTrustedFirmwareK3Lite
     armTrustedFirmwareQemu
     armTrustedFirmwareRK3328
     armTrustedFirmwareRK3399

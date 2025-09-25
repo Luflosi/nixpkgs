@@ -24,13 +24,13 @@
   armTrustedFirmwareAllwinner,
   armTrustedFirmwareAllwinnerH6,
   armTrustedFirmwareAllwinnerH616,
-  armTrustedFirmwareK3,
+  armTrustedFirmwareK3Lite,
   armTrustedFirmwareRK3328,
   armTrustedFirmwareRK3399,
   armTrustedFirmwareRK3568,
   armTrustedFirmwareRK3588,
   armTrustedFirmwareS905,
-  opteeK3am62x,
+  opteeK3AM62x,
   opensbi,
   buildPackages,
   callPackages,
@@ -63,6 +63,7 @@ let
       defconfig,
       extraConfig ? "",
       extraPatches ? [ ],
+      extraPythonDeps ? p: [ ],
       extraMakeFlags ? [ ],
       extraMeta ? { },
       crossTools ? false,
@@ -98,11 +99,7 @@ let
             p.libfdt
             p.setuptools # for pkg_resources
             p.pyelftools
-            p.pyyaml
-            p.yamllint
-            p.jsonschema
-            # TODO: only add required python modules for specific u-boot build
-          ]))
+          ] ++ (extraPythonDeps p)))
           swig
           which # for scripts/dtc-version.sh
           perl # for oid build (secureboot)
@@ -183,17 +180,35 @@ let
     version = "0-unstable-todo";
     defconfig = "kontron_sa67_a53_defconfig";
     extraMeta.platforms = [ "aarch64-linux" ];
-    BINMAN_INDIRS = fetchgit {
-      url = "https://git.ti.com/git/processor-firmware/ti-linux-firmware.git";
-      tag = "11.01.14";
-      hash = "sha256-zEfDtjuW9kFIAWshHLWnaR7/5F2LpPD6PhfDop0G9K8=";
-      sparseCheckout = [ "ti-dm/j722s/ipc_echo_testb_mcu1_0_release_strip.xer5f" ];
+
+    # TODO: check if all of them are required
+    extraPythonDeps = buildPackages.python3.withPackages (p: [
+      p.pyyaml
+      p.yamllint
+      p.jsonschema
+    ]);
+
+    # The canonical URL is https://git.ti.com/git/processor-firmware/ti-linux-firmware.git
+    # We're using the GitHub mirror because the git.ti.com server does not support filtering.
+    # This means that we would need to download the whole 1-2GB just to fetch this one file.
+    # Using GitHub avoids this inefficiency.
+    env = {
+      BINMAN_INDIRS = fetchFromGitHub {
+        owner = "TexasInstruments";
+        repo = "ti-linux-firmware";
+        tag = "11.01.14";
+        hash = "sha256-zEfDtjuW9kFIAWshHLWnaR7/5F2LpPD6PhfDop0G9K8=";
+        sparseCheckout = [ "ti-dm/j722s/ipc_echo_testb_mcu1_0_release_strip.xer5f" ];
+        meta = {
+          # For the full license see https://github.com/TexasInstruments/ti-linux-firmware/blob/27344bea60be4f0410feb1c309b9de3cdc7f8c6d/LICENSE.ti
+          license = lib.licenses.unfreeRedistributableFirmware;
+          sourceProvenance = with lib.sourceTypes; [ binaryFirmware ];
+        };
+      };
+      BL31 = "${armTrustedFirmwareK3Lite}/bl31.bin";
+      TEE = "${opteeK3AM62x}/tee-raw.bin";
     };
-    # BL31 = ./bl31.bin;
-    BL31 = "${armTrustedFirmwareK3}/bl31.bin";
-    TEE = "${opteeK3am62x}/tee-raw.bin";
     filesToInstall = [ "tispl.bin" "u-boot.img" ];
-    # TODO: mention that you need the other u-boot as well in a longDescription
     extraMeta = {
       description = "Boot loader for the SMARC-sAM67 (For the main CPU cores inside the SoC)";
       longDescription = ''
@@ -205,19 +220,25 @@ let
   ubootSMARC-sAM67-R5 = buildUBoot {
     inherit (ubootSMARC-sAM67-A53) src version;
     defconfig = "kontron_sa67_r5_defconfig";
-    extraMeta.platforms = [ "armv7l-linux" ]; # TODO: Should we be using armv7r-linux instead?
-    BINMAN_INDIRS = fetchgit {
-      url = ubootSMARC-sAM67-A53.BINMAN_INDIRS.url;
+    extraMeta.platforms = [ "armv7l-linux" ]; # armv7r-linux might be more accurate but TODO does not compile on that platform
+
+    # TODO: check if all of them are required
+    extraPythonDeps = buildPackages.python3.withPackages (p: [
+      p.pyyaml
+      p.yamllint
+      p.jsonschema
+    ]);
+
+    env.BINMAN_INDIRS = fetchFromGitHub {
+      inherit (ubootSMARC-sAM67-A53.BINMAN_INDIRS) owner repo meta;
       tag = "11.01.14";
-      hash = "sha256-d6rKe14tiC7/jz4CO+KA9PU1Wyz3zPYm1qmiGt3+kEU=";
-      # TODO: the server does not support filtering, so either use a different server or simply use the whole repo
+      hash = "sha256-e6rKe14tiC7/jz4CO+KA9PU1Wyz3zPYm1qmiGt3+kEU=";
       sparseCheckout = [
         "ti-sysfw/ti-fs-firmware-j722s-hs-fs-enc.bin"
         "ti-sysfw/ti-fs-firmware-j722s-hs-fs-cert.bin"
       ];
     };
     filesToInstall = [ "tiboot3.bin" ];
-    # TODO: mention that you need the other u-boot as well in a longDescription
     extraMeta = {
       description = "Boot loader for the SMARC-sAM67 (For the small Arm Cortex-R5F Processor inside the SoC)";
       longDescription = ''

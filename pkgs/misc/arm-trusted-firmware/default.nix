@@ -162,7 +162,7 @@ in
     filesToInstall = [ "build/${platform}/release/bl31.bin" ];
   };
 
-  armTrustedFirmwareK3 = buildArmTrustedFirmware rec {
+  armTrustedFirmwareK3Lite = buildArmTrustedFirmware rec {
     extraMakeFlags = [
       # Flags from https://docs.u-boot.org/en/stable/board/ti/j722s_evm.html
       "SPD=opteed"
@@ -170,7 +170,7 @@ in
     ];
     platform = "k3";
     extraMeta.platforms = [ "aarch64-linux" ];
-    filesToInstall = [ "build/${platform}/generic/release/bl31.bin" ];
+    filesToInstall = [ "build/${platform}/lite/release/bl31.bin" ];
   };
 
   armTrustedFirmwareQemu = buildArmTrustedFirmware rec {

@@ -21,6 +21,7 @@ let
       version ? null,
       src ? null,
       platform,
+      flavor,
       extraMakeFlags ? [ ],
       extraMeta ? { },
       ...
@@ -38,7 +39,7 @@ let
     in
     stdenv.mkDerivation (
       {
-        pname = "optee-os-${platform}"; # TODO: append flavor
+        pname = "optee-os-${platform}-${flavor}";
 
         version = if src == null then defaultVersion else version;
 
@@ -72,6 +73,7 @@ let
         makeFlags = [
           "O=out"
           "PLATFORM=${platform}"
+          "PLATFORM_FLAVOR=${flavor}"
           "CFG_USER_TA_TARGETS=${taTarget}"
         ]
         ++ (lib.optionals (is32bit) [
@@ -116,21 +118,19 @@ in
 
   opteeQemuArm = buildOptee {
     platform = "vexpress";
-    extraMakeFlags = [ "PLATFORM_FLAVOR=qemu_virt" ];
+    flavor = "qemu_virt";
     extraMeta.platforms = [ "armv7l-linux" ];
   };
 
   opteeQemuAarch64 = buildOptee {
     platform = "vexpress";
-    extraMakeFlags = [ "PLATFORM_FLAVOR=qemu_armv8a" ];
+    flavor = "qemu_armv8a";
     extraMeta.platforms = [ "aarch64-linux" ];
   };
 
-  opteeK3am62x = buildOptee {
+  opteeK3AM62x = buildOptee {
     platform = "k3";
-    # TODO: add parameter for PLATFORM_FLAVOR too
-    extraMakeFlags = [ "PLATFORM_FLAVOR=am62x" ];
-    # extraMeta.platforms = [ "armv7l-linux" ];
+    flavor = "am62x";
     # TODO: add parameter for appending something to the description
     extraMeta = {
       platforms = [ "aarch64-linux" ];
