@@ -163,6 +163,11 @@ in
   };
 
   armTrustedFirmwareK3 = buildArmTrustedFirmware rec {
+    extraMakeFlags = [
+      # Flags from https://docs.u-boot.org/en/stable/board/ti/j722s_evm.html
+      "SPD=opteed"
+      "TARGET_BOARD=lite"
+    ];
     platform = "k3";
     extraMeta.platforms = [ "aarch64-linux" ];
     filesToInstall = [ "build/${platform}/generic/release/bl31.bin" ];
