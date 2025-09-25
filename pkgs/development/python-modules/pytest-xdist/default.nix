@@ -65,6 +65,7 @@ buildPythonPackage rec {
   ];
 
   setupHook = ./setup-hook.sh;
+  # doCheck = false;
 
   meta = with lib; {
     changelog = "https://github.com/pytest-dev/pytest-xdist/blob/v${version}/CHANGELOG.rst";

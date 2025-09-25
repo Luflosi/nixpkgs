@@ -97,6 +97,10 @@ let
             p.libfdt
             p.setuptools # for pkg_resources
             p.pyelftools
+            p.pyyaml
+            p.yamllint
+            p.jsonschema
+            # TODO: only add required python modules for specific u-boot build
           ]))
           swig
           which # for scripts/dtc-version.sh
@@ -185,8 +189,15 @@ let
       sparseCheckout = [ "ti-dm/j722s/ipc_echo_testb_mcu1_0_release_strip.xer5f" ];
     };
     BL31 = "${armTrustedFirmwareK3}/bl31.bin";
-    TEE = ./tee-raw.bin;
+    TEE = ./tee-raw.bin; # TODO: build from source
     filesToInstall = [ "tispl.bin" "u-boot.img" ];
+    # TODO: mention that you need the other u-boot as well in a longDescription
+    meta = {
+      description = "Boot loader for the SMARC-sAM67 (For the main CPU cores inside the SoC)";
+      longDescription = ''
+        You also need ubootSMARC-sAM67-R5.
+      '';
+    };
   };
 
   ubootSMARC-sAM67-R5 = buildUBoot {
@@ -196,18 +207,21 @@ let
     BINMAN_INDIRS = fetchgit {
       url = ubootSMARC-sAM67-K3.BINMAN_INDIRS.url;
       tag = "11.01.14";
-      hash = "";
-      sparseCheckout = [ "TODO" ];
+      hash = "sha256-d6rKe14tiC7/jz4CO+KA9PU1Wyz3zPYm1qmiGt3+kEU=";
+      # TODO: the server does not support filtering, so either use a different server or simply use the whole repo
+      sparseCheckout = [
+        "ti-sysfw/ti-fs-firmware-j722s-hs-fs-enc.bin"
+        "ti-sysfw/ti-fs-firmware-j722s-hs-fs-cert.bin"
+      ];
     };
     filesToInstall = [ "tiboot3.bin" ];
-  };
-
-  ubootSMARC-sAM67 = symlinkJoin {
-    name = "ubootSMARC-sAM67";
-    paths = [
-      ubootSMARC-sAM67-K3
-      ubootSMARC-sAM67-R5
-    ];
+    # TODO: mention that you need the other u-boot as well in a longDescription
+    meta = {
+      description = "Boot loader for the SMARC-sAM67 (For the small Arm Cortex-R5F Processor inside the SoC)";
+      longDescription = ''
+        You also need ubootSMARC-sAM67-K3.
+      '';
+    };
   };
 in
 {
@@ -870,10 +884,7 @@ in
     filesToInstall = [ "u-boot.kwb" ];
   };
 
-  inherit
-    ubootSMARC-sAM67-K3
-    ubootSMARC-sAM67-R5
-    ubootSMARC-sAM67;
+  inherit ubootSMARC-sAM67-K3 ubootSMARC-sAM67-R5;
 
   ubootSopine = buildUBoot {
     defconfig = "sopine_baseboard_defconfig";
