@@ -30,6 +30,7 @@
   armTrustedFirmwareRK3568,
   armTrustedFirmwareRK3588,
   armTrustedFirmwareS905,
+  opteeK3am62x,
   opensbi,
   buildPackages,
   callPackages,
@@ -172,7 +173,7 @@ let
     )
   );
 
-  ubootSMARC-sAM67-K3 = buildUBoot {
+  ubootSMARC-sAM67-A53 = buildUBoot {
     src = fetchFromGitHub {
       owner = "kontron";
       repo = "u-boot-smarc-sam67";
@@ -188,11 +189,12 @@ let
       hash = "sha256-zEfDtjuW9kFIAWshHLWnaR7/5F2LpPD6PhfDop0G9K8=";
       sparseCheckout = [ "ti-dm/j722s/ipc_echo_testb_mcu1_0_release_strip.xer5f" ];
     };
-    BL31 = "${armTrustedFirmwareK3}/bl31.bin";
-    TEE = ./tee-raw.bin; # TODO: build from source
+    BL31 = ./bl31.bin;
+    # TEE = ./tee-raw.bin; # TODO: build from source
+    TEE = "${opteeK3am62x}/tee-raw.bin";
     filesToInstall = [ "tispl.bin" "u-boot.img" ];
     # TODO: mention that you need the other u-boot as well in a longDescription
-    meta = {
+    extraMeta = {
       description = "Boot loader for the SMARC-sAM67 (For the main CPU cores inside the SoC)";
       longDescription = ''
         You also need ubootSMARC-sAM67-R5.
@@ -201,11 +203,11 @@ let
   };
 
   ubootSMARC-sAM67-R5 = buildUBoot {
-    inherit (ubootSMARC-sAM67-K3) src version;
+    inherit (ubootSMARC-sAM67-A53) src version;
     defconfig = "kontron_sa67_r5_defconfig";
     extraMeta.platforms = [ "armv7l-linux" ]; # TODO: Should we be using armv7r-linux instead?
     BINMAN_INDIRS = fetchgit {
-      url = ubootSMARC-sAM67-K3.BINMAN_INDIRS.url;
+      url = ubootSMARC-sAM67-A53.BINMAN_INDIRS.url;
       tag = "11.01.14";
       hash = "sha256-d6rKe14tiC7/jz4CO+KA9PU1Wyz3zPYm1qmiGt3+kEU=";
       # TODO: the server does not support filtering, so either use a different server or simply use the whole repo
@@ -216,10 +218,10 @@ let
     };
     filesToInstall = [ "tiboot3.bin" ];
     # TODO: mention that you need the other u-boot as well in a longDescription
-    meta = {
+    extraMeta = {
       description = "Boot loader for the SMARC-sAM67 (For the small Arm Cortex-R5F Processor inside the SoC)";
       longDescription = ''
-        You also need ubootSMARC-sAM67-K3.
+        You also need ubootSMARC-sAM67-A53.
       '';
     };
   };
@@ -884,7 +886,7 @@ in
     filesToInstall = [ "u-boot.kwb" ];
   };
 
-  inherit ubootSMARC-sAM67-K3 ubootSMARC-sAM67-R5;
+  inherit ubootSMARC-sAM67-A53 ubootSMARC-sAM67-R5;
 
   ubootSopine = buildUBoot {
     defconfig = "sopine_baseboard_defconfig";

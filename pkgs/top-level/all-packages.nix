@@ -6957,7 +6957,7 @@ with pkgs;
     buildOptee
     opteeQemuArm
     opteeQemuAarch64
-    opteeTodo
+    opteeK3am62x
     ;
 
   patchelf = callPackage ../development/tools/misc/patchelf { };
@@ -10722,7 +10722,7 @@ with pkgs;
     ubootRockPro64
     ubootROCPCRK3399
     ubootSheevaplug
-    ubootSMARC-sAM67-K3
+    ubootSMARC-sAM67-A53
     ubootSMARC-sAM67-R5
     ubootSopine
     ubootTuringRK1

@@ -38,7 +38,7 @@ let
     in
     stdenv.mkDerivation (
       {
-        pname = "optee-os-${platform}";
+        pname = "optee-os-${platform}"; # TODO: append flavor
 
         version = if src == null then defaultVersion else version;
 
@@ -101,9 +101,11 @@ let
             homepage = "https://github.com/OP-TEE/optee_os";
             changelog = "https://github.com/OP-TEE/optee_os/blob/${defaultVersion}/CHANGELOG.md";
             license = licenses.bsd2;
-            maintainers = [ maintainers.jmbaur ];
           }
-          // extraMeta;
+          // extraMeta
+          // {
+            maintainers = [ maintainers.jmbaur ] ++ extraMeta.maintainers or [];
+          };
       }
       // removeAttrs args [ "extraMeta" ]
     )
@@ -124,9 +126,15 @@ in
     extraMeta.platforms = [ "aarch64-linux" ];
   };
 
-  opteeTodo = buildOptee {
-    platform = "ti";
-    extraMakeFlags = [ "PLATFORM_FLAVOR=am57xx" ];
-    extraMeta.platforms = [ "armv7l-linux" ];
+  opteeK3am62x = buildOptee {
+    platform = "k3";
+    # TODO: add parameter for PLATFORM_FLAVOR too
+    extraMakeFlags = [ "PLATFORM_FLAVOR=am62x" ];
+    # extraMeta.platforms = [ "armv7l-linux" ];
+    # TODO: add parameter for appending something to the description
+    extraMeta = {
+      platforms = [ "aarch64-linux" ];
+      maintainers = with lib.maintainers; [ Luflosi ];
+    };
   };
 }
