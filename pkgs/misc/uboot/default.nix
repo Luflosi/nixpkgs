@@ -175,10 +175,10 @@ let
     src = fetchFromGitHub {
       owner = "kontron";
       repo = "u-boot-smarc-sam67";
-      rev = "259a4765c26babb81a522edcfde8f14f41534ea6";
-      hash = "sha256-SZd0TBp9pb8i9GcaohWWs8Pk7EEYQ5d4f9YdyxPFBkw=";
+      rev = "794b1e132123f1c14faaa26242a28a9e3696211f";
+      hash = "";
     };
-    version = "0-unstable-todo";
+    version = "2025.10-rc5";
     defconfig = "kontron_sa67_a53_defconfig";
     extraMeta.platforms = [ "aarch64-linux" ];
 
