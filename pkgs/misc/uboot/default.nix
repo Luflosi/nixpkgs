@@ -165,6 +165,7 @@ let
       }
       // removeAttrs args [
         "extraMeta"
+        "extraPythonDeps"
         "pythonScriptsToInstall"
       ]
     )
@@ -182,11 +183,11 @@ let
     extraMeta.platforms = [ "aarch64-linux" ];
 
     # TODO: check if all of them are required
-    extraPythonDeps = buildPackages.python3.withPackages (p: [
+    extraPythonDeps = p: [
       p.pyyaml
       p.yamllint
       p.jsonschema
-    ]);
+    ];
 
     # The canonical URL is https://git.ti.com/git/processor-firmware/ti-linux-firmware.git
     # We're using the GitHub mirror because the git.ti.com server does not support filtering.
@@ -223,16 +224,17 @@ let
     extraMeta.platforms = [ "armv7l-linux" ]; # armv7r-linux might be more accurate but TODO does not compile on that platform
 
     # TODO: check if all of them are required
-    extraPythonDeps = buildPackages.python3.withPackages (p: [
+    extraPythonDeps = p: [
       p.pyyaml
       p.yamllint
       p.jsonschema
-    ]);
+    ];
 
     env.BINMAN_INDIRS = fetchFromGitHub {
       inherit (ubootSMARC-sAM67-A53.BINMAN_INDIRS) owner repo meta;
+
       tag = "11.01.14";
-      hash = "sha256-e6rKe14tiC7/jz4CO+KA9PU1Wyz3zPYm1qmiGt3+kEU=";
+      hash = "sha256-d6rKe14tiC7/jz4CO+KA9PU1Wyz3zPYm1qmiGt3+kEU=";
       sparseCheckout = [
         "ti-sysfw/ti-fs-firmware-j722s-hs-fs-enc.bin"
         "ti-sysfw/ti-fs-firmware-j722s-hs-fs-cert.bin"
