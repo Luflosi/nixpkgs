@@ -176,7 +176,7 @@ let
       owner = "kontron";
       repo = "u-boot-smarc-sam67";
       rev = "794b1e132123f1c14faaa26242a28a9e3696211f";
-      hash = "";
+      hash = "sha256-ctQgVhYLBO6O0nVdxXd5i1lqCqIy3bgAjOZGoLeHjzw=";
     };
     version = "2025.10-rc5";
     defconfig = "kontron_sa67_a53_defconfig";
