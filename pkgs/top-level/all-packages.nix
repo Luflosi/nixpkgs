@@ -10675,6 +10675,7 @@ with pkgs;
     ubootCM3588NAS
     ubootCubieboard2
     ubootGuruplug
+    ubootJ722S-EVM-A53
     ubootJetsonTK1
     ubootLibreTechCC
     ubootNanoPCT4

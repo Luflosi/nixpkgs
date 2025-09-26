@@ -381,6 +381,46 @@ in
     filesToInstall = [ "u-boot.bin" ];
   };
 
+  ubootJ722S-EVM-A53 = buildUBoot {
+    defconfig = "j722s_evm_a53_defconfig";
+# configs/j722s_evm_r5_defconfig";
+    extraMeta.platforms = [ "aarch64-linux" ];
+
+    extraPythonDeps = p: [
+      # p.pyyaml
+      # p.yamllint
+      # p.jsonschema
+    ];
+
+    # The canonical URL is https://git.ti.com/git/processor-firmware/ti-linux-firmware.git
+    # We're using the GitHub mirror because the git.ti.com server does not support filtering.
+    # This means that we would need to download the whole 1-2GB just to fetch this one file.
+    # Using GitHub avoids this inefficiency.
+    env = {
+      BINMAN_INDIRS = fetchFromGitHub {
+        owner = "TexasInstruments";
+        repo = "ti-linux-firmware";
+        tag = "11.01.14";
+        hash = "sha256-zEfDtjuW9kFIAWshHLWnaR7/5F2LpPD6PhfDop0G9K8=";
+        sparseCheckout = [ "ti-dm/j722s/ipc_echo_testb_mcu1_0_release_strip.xer5f" ];
+        meta = {
+          # For the full license see https://github.com/TexasInstruments/ti-linux-firmware/blob/27344bea60be4f0410feb1c309b9de3cdc7f8c6d/LICENSE.ti
+          license = lib.licenses.unfreeRedistributableFirmware;
+          sourceProvenance = with lib.sourceTypes; [ binaryFirmware ];
+        };
+      };
+      BL31 = "${armTrustedFirmwareK3Lite}/bl31.bin";
+      TEE = "${opteeK3AM62x}/tee-raw.bin";
+    };
+    filesToInstall = [ "tispl.bin" "u-boot.img" ];
+    extraMeta = {
+      description = "Boot loader for the J722S-EVM (For the main CPU cores inside the SoC)";
+      longDescription = ''
+        You also need ubootJ722S-EVM-R5.
+      '';
+    };
+  };
+
   ubootJetsonTK1 = buildUBoot {
     defconfig = "jetson-tk1_defconfig";
     extraMeta.platforms = [ "armv7l-linux" ];
