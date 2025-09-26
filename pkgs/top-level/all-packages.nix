@@ -10676,6 +10676,7 @@ with pkgs;
     ubootCubieboard2
     ubootGuruplug
     ubootJ722S-EVM-A53
+    ubootJ722S-EVM-R5
     ubootJetsonTK1
     ubootLibreTechCC
     ubootNanoPCT4
