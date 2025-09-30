@@ -416,11 +416,10 @@ in
     defconfig = "j722s_evm_r5_defconfig";
     extraMeta.platforms = [ "armv7l-linux" ]; # armv7r-linux might be more accurate but TODO does not compile on that platform
 
-    # TODO: check if all of them are required
-    extraPythonDeps = p: [
-      # p.pyyaml
-      # p.yamllint
-      # p.jsonschema
+    extraPythonDeps = p: with p; [
+      pyyaml
+      yamllint
+      jsonschema
     ];
 
     env.BINMAN_INDIRS = fetchFromGitHub {
