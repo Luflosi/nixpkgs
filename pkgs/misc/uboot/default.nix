@@ -376,7 +376,6 @@ in
 
   ubootJ722S-EVM-A53 = buildUBoot {
     defconfig = "j722s_evm_a53_defconfig";
-# configs/j722s_evm_r5_defconfig";
     extraMeta.platforms = [ "aarch64-linux" ];
 
     # The canonical URL is https://git.ti.com/git/processor-firmware/ti-linux-firmware.git
@@ -404,7 +403,7 @@ in
       description = "Boot loader for the J722S-EVM (For the main CPU cores inside the SoC)";
       longDescription = ''
         You also need ubootJ722S-EVM-R5.
-        The J722SXH01EVM starter kit by Texas Instruments is an evaluation module is built around the J722S, TDA4VEN, TDA4AEN and AM67 vision and display processor.
+        The J722SXH01EVM starter kit by Texas Instruments is an evaluation module built around the J722S, TDA4VEN, TDA4AEN and AM67 vision and display processor.
       '';
       maintainers = with lib.maintainers; [
         Luflosi
@@ -437,7 +436,7 @@ in
       description = "Boot loader for the J722S-EVM (For the small Arm Cortex-R5F Processor inside the SoC)";
       longDescription = ''
         You also need ubootJ722S-EVM-A53.
-        The J722SXH01EVM starter kit by Texas Instruments is an evaluation module is built around the J722S, TDA4VEN, TDA4AEN and AM67 vision and display processor.
+        The J722SXH01EVM starter kit by Texas Instruments is an evaluation module built around the J722S, TDA4VEN, TDA4AEN and AM67 vision and display processor.
       '';
       maintainers = with lib.maintainers; [
         Luflosi
