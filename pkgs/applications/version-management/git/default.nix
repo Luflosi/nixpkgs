@@ -471,7 +471,6 @@ stdenv.mkDerivation (finalAttrs: {
     # TODO: Investigate while these still fail (without POSIXPERM):
     # Tested to fail: 2.46.0
     disable_test t0001-init 'shared overrides system'
-    disable_test t0050-filesystem
     # Tested to fail: 2.46.0
     disable_test t0001-init 'init honors global core.sharedRepository'
     # Tested to fail: 2.46.0
