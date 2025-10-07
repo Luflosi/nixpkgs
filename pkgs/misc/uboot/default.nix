@@ -38,10 +38,10 @@
 }@pkgs:
 
 let
-  defaultVersion = "2025.10-rc5";
+  defaultVersion = "2025.10";
   defaultSrc = fetchurl {
     url = "https://ftp.denx.de/pub/u-boot/u-boot-${defaultVersion}.tar.bz2";
-    hash = "sha256-Nj+R1VOr63F7mI9ft4VRTKZtN4CeUMeMOYXryIvWF7I=";
+    hash = "";
   };
 
   # Dependencies for the tools need to be included as either native or cross,
@@ -182,9 +182,11 @@ let
     defconfig = "kontron_sa67_a53_defconfig";
     extraMeta.platforms = [ "aarch64-linux" ];
 
-    # The canonical URL is https://git.ti.com/git/processor-firmware/ti-linux-firmware.git
-    # We're using the GitHub mirror because the git.ti.com server does not support filtering.
-    # This means that we would need to download the whole 1-2GB just to fetch this one file.
+    # The canonical URL is https://git.ti.com/git/processor-firmware/ti-linux-firmware.git or
+    # git://git.ti.com/processor-firmware/ti-linux-firmware.git
+    # We're using the GitHub mirror because the git.ti.com server does not support filtering:
+    # warning: filtering not recognized by server, ignoring
+    # This means that we would need to download the whole repository (1-2GB) just to fetch this one file.
     # Using GitHub avoids this inefficiency.
     env = {
       BINMAN_INDIRS = fetchFromGitHub {
