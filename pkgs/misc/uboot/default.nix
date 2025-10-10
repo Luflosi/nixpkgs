@@ -4,6 +4,7 @@
   bc,
   bison,
   dtc,
+  efitools,
   fetchFromGitHub,
   fetchgit,
   fetchpatch,
@@ -66,6 +67,7 @@ let
       extraPythonDeps ? p: [ ],
       extraMakeFlags ? [ ],
       extraMeta ? { },
+      extraNativeBuildInputs ? [ ],
       crossTools ? false,
       stdenv ? pkgs.stdenv,
       ...
@@ -104,6 +106,7 @@ let
           which # for scripts/dtc-version.sh
           perl # for oid build (secureboot)
         ]
+        ++ extraNativeBuildInputs
         ++ lib.optionals (!crossTools) toolsDeps
         ++ lib.optionals stdenv.buildPlatform.isDarwin [ darwin.DarwinTools ]; # sw_vers command is needed on darwin
         depsBuildBuild = [ buildPackages.gccStdenv.cc ]; # gccStdenv is needed for Darwin buildPlatform
@@ -963,6 +966,15 @@ in
       "idbloader.img"
     ];
     BL31 = "${armTrustedFirmwareRK3399}/bl31.elf";
+  };
+
+  ubootSandbox = buildUBoot {
+    defconfig = "sandbox_defconfig";
+    extraMeta.platforms = lib.platforms.linux;
+    extraNativeBuildInputs = [
+      efitools # For cert-to-efi-sig-list
+    ];
+    filesToInstall = [ "u-boot" ];
   };
 
   ubootSheevaplug = buildUBoot {

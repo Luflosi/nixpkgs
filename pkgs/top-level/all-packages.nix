@@ -10723,6 +10723,7 @@ with pkgs;
     ubootRockPi4
     ubootRockPro64
     ubootROCPCRK3399
+    ubootSandbox
     ubootSheevaplug
     ubootSMARC-sAM67-A53
     ubootSMARC-sAM67-R5
