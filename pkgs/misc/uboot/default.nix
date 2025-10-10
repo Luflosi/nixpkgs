@@ -62,6 +62,7 @@ let
       pythonScriptsToInstall ? { },
       installDir ? "$out",
       defconfig,
+      configFragments ? [ ],
       extraConfig ? "",
       extraPatches ? [ ],
       extraPythonDeps ? p: [ ],
@@ -73,8 +74,12 @@ let
       ...
     }@args:
     stdenv.mkDerivation (
-      {
-        pname = "uboot-${defconfig}";
+      let
+        configs = [ defconfig ] ++ configFragments;
+      in {
+        pname = let
+          configNames = builtins.concatStringsSep "_" configs;
+        in "uboot-${configNames}";
 
         version = if src == null then defaultVersion else version;
 
@@ -125,10 +130,14 @@ let
 
         passAsFile = [ "extraConfig" ];
 
-        configurePhase = ''
+        configurePhase = let
+          mkMakeCommand = config: "make -j$NIX_BUILD_CORES ${config}";
+          makeCommandsList = builtins.map mkMakeCommand configs;
+          makeCommandsString = builtins.concatStringsSep "\n" makeCommandsList;
+        in ''
           runHook preConfigure
 
-          make -j$NIX_BUILD_CORES ${defconfig}
+          ${makeCommandsString}
 
           cat $extraConfigPath >> .config
 
