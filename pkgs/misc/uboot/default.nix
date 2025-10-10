@@ -192,6 +192,7 @@ let
     };
     version = "2025.10";
     defconfig = "kontron_sa67_a53_defconfig";
+    configFragments = lib.singleton "am62x_a53_usbdfu.config";
     extraMeta.platforms = [ "aarch64-linux" ];
 
     # The canonical URL is https://git.ti.com/git/processor-firmware/ti-linux-firmware.git or
@@ -228,6 +229,7 @@ let
   ubootSMARC-sAM67-R5 = buildUBoot {
     inherit (ubootSMARC-sAM67-A53) src version;
     defconfig = "kontron_sa67_r5_defconfig";
+    configFragments = lib.singleton "am62x_r5_usbdfu.config";
     extraMeta.platforms = [ "armv7l-linux" ]; # armv7r-linux might be more accurate but TODO does not compile on that platform
 
     # TODO: check if all of them are required
