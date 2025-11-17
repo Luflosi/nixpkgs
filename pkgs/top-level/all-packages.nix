@@ -6683,6 +6683,7 @@ with pkgs;
     buildOptee
     opteeQemuArm
     opteeQemuAarch64
+    opteeK3AM62x
     ;
 
   patchelf = callPackage ../development/tools/misc/patchelf { };
