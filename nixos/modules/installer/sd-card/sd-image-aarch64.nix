@@ -112,6 +112,12 @@ in
     trustedApplications = [ "${pkgs.opteeK3AM62x.devkit}/ta/fd02c9da-306c-48c7-a49c-bbd827ae86ee.ta" ];
   };
 
+  # TODO: copy https://github.com/kontron/buildroot-external-smarc-sam67/blob/6cffbde66c8dacae3d5dbf8c5be27c4df6f1e1cd/board/kontron/smarc-sam67/rootfs_overlay/etc/mspm0flash/ctrl
+  environment.systemPackages = with pkgs; [
+    i2c-tool
+    # mspm0flash
+  ];
+
   sdImage = {
     populateFirmwareCommands =
       let
