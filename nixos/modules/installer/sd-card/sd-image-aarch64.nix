@@ -36,6 +36,16 @@ in
   # boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelPackages = pkgs.linuxPackages_testing;
 
+  boot.kernelPatches = [
+    {
+      name = "Enable CONFIG_EDAC_TI";
+      patch = null;
+      extraConfig = ''
+        EDAC_TI y
+      '';
+    }
+  ];
+
   boot.kernelModules = modules;
   boot.initrd.kernelModules = modules;
 
