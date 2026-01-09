@@ -60,7 +60,7 @@ in
       machine.succeed("sudo -u osmuser psql -d gis -f '${pkgs.openstreetmap-carto}/functions.sql'")
 
     with subtest("Execute nik4.py"):
-      machine.succeed("sudo -u osmuser nik4.py --url 'https://www.openstreetmap.org/#map=17/42.506650/1.525828' --ppi 300 -a 4 '${pkgs.openstreetmap-carto}/mapnik.xml' /tmp/map.png >&2")
+      machine.succeed("sudo -u osmuser nik4.py -z 17 -c 1.525828 42.506650 --ppi 300 -a 4 '${pkgs.openstreetmap-carto}/mapnik.xml' /tmp/map.png >&2")
       machine.copy_from_vm("/tmp/map.png")
       import os
       image_size = os.stat(machine.out_dir / "map.png").st_size
