@@ -992,7 +992,7 @@ in
   neo4j = runTest ./neo4j.nix;
   netbird = runTest ./netbird.nix;
   netdata = runTest ./netdata.nix;
-  nik4 = runTest ./nik4.nix;
+  nik5 = runTest ./nik5.nix;
   nimdow = runTest ./nimdow.nix;
   nix-channel = pkgs.callPackage ../modules/config/nix-channel/test.nix { };
   networking.scripted = handleTest ./networking/networkd-and-scripted.nix { networkd = false; };
