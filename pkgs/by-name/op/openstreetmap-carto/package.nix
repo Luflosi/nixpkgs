@@ -80,6 +80,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     hash = "sha256-0kPgX09oJprnTDnXdLhse8VWz/crjN5d40yKS0WhsHc=";
   };
 
+  patches = [ ./customizations.patch ];
+
   postPatch = ''
     substituteInPlace external-data.yml \
       --replace-fail           '${simplified_water_polygons.url}' 'file://${simplified_water_polygons.archive}' \
