@@ -1,0 +1,93 @@
+diff --git a/project.mml b/project.mml
+index c7cdf111..8ca8ac8b 100644
+--- a/project.mml
++++ b/project.mml
+@@ -55,6 +55,7 @@ Stylesheet:
+   - style/addressing.mss
+   - style/golf.mss
+   - style/tourism.mss
++  - style/custom.mss
+ Layer:
+   - id: landcover-low-zoom
+     geometry: polygon
+@@ -1107,6 +1108,15 @@ Layer:
+     properties:
+       minzoom: 1
+       maxzoom: 3
++  - id: route
++    geometry: linestring
++    Datasource:
++      type: ogr
++      file: ${route}
++      layer: route
++    properties:
++      status: "off"
++      srs: "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
+   - id: admin-low-zoom
+     geometry: linestring
+     <<: *extents
+@@ -1576,7 +1586,7 @@ Layer:
+                 'amenity_' || CASE WHEN amenity IN ('parcel_locker') THEN amenity END,
+                 'diplomatic_'|| CASE WHEN tags->'office' IN ('diplomatic') AND tags->'diplomatic' IN ('embassy', 'consulate') THEN tags->'diplomatic' ELSE NULL END,
+                 'advertising_' || CASE WHEN tags->'advertising' in ('column') THEN tags->'advertising' END,
+-                'emergency_' || CASE WHEN tags->'emergency' IN ('phone') AND way_area IS NULL THEN tags->'emergency' END,
++                'emergency_' || CASE WHEN tags->'emergency' IN ('phone', 'fire_hydrant', 'fire_water_pond') AND way_area IS NULL THEN tags->'emergency' END,
+                 'shop' || CASE WHEN shop IN ('yes', 'no', 'vacant', 'closed', 'disused', 'empty') OR shop IS NULL THEN NULL ELSE '' END,
+                 'leisure_' || CASE WHEN leisure IN ('amusement_arcade', 'beach_resort', 'bird_hide', 'bowling_alley', 'dog_park', 'firepit', 'fishing',
+                                                     'fitness_centre', 'fitness_station', 'garden', 'golf_course', 'ice_rink', 'marina', 'miniature_golf',
+diff --git a/style/amenity-points.mss b/style/amenity-points.mss
+index 72188597..1f966d65 100644
+--- a/style/amenity-points.mss
++++ b/style/amenity-points.mss
+@@ -147,13 +147,7 @@
+   }
+ 
+   [feature = 'highway_bus_stop'] {
+-    [zoom >= 16][zoom < 17] {
+-      marker-file: url('symbols/square.svg');
+-      marker-fill: @transportation-icon;
+-      marker-width: 6;
+-      marker-clip: false;
+-    }
+-    [zoom >= 17] {
++    [zoom >= 16] {
+       marker-file: url('symbols/highway/bus_stop.svg');
+       marker-fill: @transportation-icon;
+       marker-clip: false;
+@@ -708,6 +702,24 @@
+     marker-clip: false;
+   }
+ 
++  [feature = 'emergency_fire_hydrant'] {
++    [zoom >= 16] {
++      marker-file: url('symbols/square.svg');
++      marker-fill: #ff0000;
++      marker-width: 6;
++      marker-clip: false;
++    }
++  }
++
++  [feature = 'emergency_fire_water_pond'] {
++    [zoom >= 16] {
++      marker-file: url('symbols/square.svg');
++      marker-fill: #ff0000;
++      marker-width: 6;
++      marker-clip: false;
++    }
++  }
++
+   [feature = 'amenity_theatre'][zoom >= 16] {
+     marker-file: url('symbols/amenity/theatre.svg');
+     marker-fill: @culture;
+diff --git a/style/custom.mss b/style/custom.mss
+new file mode 100644
+index 00000000..35940e9c
+--- /dev/null
++++ b/style/custom.mss
+@@ -0,0 +1,6 @@
++#route {
++  line-join: round;
++  line-cap: round;
++  line-color: #012d64;
++  line-width: 5;
++}
