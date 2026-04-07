@@ -31,9 +31,9 @@ let
       "mips64"
     else if isMsp430 then
       "msp430"
-    else if isPower && is32bit then
+    else if isPower32 then
       "powerpc"
-    else if isPower && is64bit then
+    else if isPower64 then
       "powerpc64"
     else if isRiscV && is64bit then
       "riscv64"

@@ -64,6 +64,12 @@ rec {
         bits = 64;
       };
     };
+    isPower32 = {
+      cpu = {
+        family = "power";
+        bits = 32;
+      };
+    };
     isAbiElfv1 = {
       abi = {
         abi = "elfv1";

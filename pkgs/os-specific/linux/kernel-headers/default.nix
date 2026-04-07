@@ -72,7 +72,7 @@ let
         darwin-byteswap-h
       ];
 
-      extraIncludeDirs = lib.optionals (with stdenvNoCC.hostPlatform; isPower && is32bit && isBigEndian) [
+      extraIncludeDirs = lib.optionals (with stdenvNoCC.hostPlatform; isPower32 && isBigEndian) [
         "ppc"
       ];
 

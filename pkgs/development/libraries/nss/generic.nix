@@ -100,7 +100,7 @@ stdenv.mkDerivation rec {
           "arm"
         else if platform.isAarch64 then
           "arm64"
-        else if platform.isPower && platform.is64bit then
+        else if platform.isPower64 then
           (if platform.isLittleEndian then "ppc64le" else "ppc64")
         else
           platform.parsed.cpu.name;

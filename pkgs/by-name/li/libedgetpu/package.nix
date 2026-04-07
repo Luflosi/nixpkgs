@@ -85,7 +85,7 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
     install -Dm555 out/direct/k8/libedgetpu.so.1.0 -t $out/lib
-    ln -s $out/lib/libedgetpu.so.1.0 $out/lib/libedgetpu.so.1
+    ln -s libedgetpu.so.1.0 $out/lib/libedgetpu.so.1
     install -Dm444 debian/edgetpu-accelerator.rules $out/lib/udev/rules.d/99-edgetpu-accelerator.rules
     install -Dm444 tflite/public/*.h -t $out/include
     runHook postInstall

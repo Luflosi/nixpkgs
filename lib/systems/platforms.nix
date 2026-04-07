@@ -36,6 +36,16 @@ rec {
     };
   };
 
+  ppc32 = {
+    linux-kernel = {
+      name = "powerpc32";
+
+      baseConfig = "pmac32_defconfig";
+      target = "vmlinux";
+      autoModules = true;
+    };
+  };
+
   ppc64 = {
     linux-kernel = {
       name = "powerpc64";
@@ -628,6 +638,9 @@ rec {
 
     else if platform.parsed.cpu == lib.systems.parse.cpuTypes.mipsel then
       (import ./examples.nix { inherit lib; }).mipsel-linux-gnu
+
+    else if platform.isPower32 then
+      ppc32
 
     else if platform.isPower64 then
       if platform.isLittleEndian then powernv else ppc64
