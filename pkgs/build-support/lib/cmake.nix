@@ -52,7 +52,7 @@ let
       cmakeFlags ? [ ],
       ...
     }:
-    cmakeFlags ++ cmakeFlags';
+    cmakeFlags' ++ cmakeFlags;
 
 in
 {

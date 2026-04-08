@@ -38,6 +38,7 @@ let
         # the linker will make the stack executable.
         "-DCMAKE_C_FLAGS=-DHAVE_GNU_STACK"
         "-DTLS_DEFAULT_CA_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt"
+        "-DCMAKE_SYSTEM_PROCESSOR=powerpc"
       ]
       ++ lib.optional buildShared "-DBUILD_SHARED_LIBS=ON";
 
@@ -143,5 +144,32 @@ in
     patches = [
       common-cmake-install-full-dirs-patch
     ];
+    postPatch = ''
+      # substituteInPlace CMakeLists.txt --replace-fail \
+      #   'MATCHES "powerpc"' \
+      #   'MATCHES "ppc"'
+      # substituteInPlace configure --replace-fail \
+      #   'if test "$host_cpu" = "powerpc"; then' \
+      #   'if test "$host_cpu" = "ppc"; then'
+      # substituteInPlace configure.ac --replace-fail \
+      #   'test "$host_cpu" = "powerpc"]' \
+      #   'test "$host_cpu" = "ppc"]'
+      substituteInPlace crypto/arch/powerpc/crypto_arch.h \
+        --replace-fail '#define HAVE_SHA1_BLOCK_DATA_ORDER' "" \
+        --replace-fail '#define HAVE_SHA1_BLOCK_GENERIC' "" \
+        --replace-fail '#define HAVE_SHA256_BLOCK_DATA_ORDER' "" \
+        --replace-fail '#define HAVE_SHA256_BLOCK_GENERIC' ""
+
+      substituteInPlace crypto/bn/arch/powerpc/bn_arch.h \
+        --replace-fail '#define HAVE_BN_ADD_WORDS' "" \
+        --replace-fail '#define HAVE_BN_DIV_WORDS' "" \
+        --replace-fail '#define HAVE_BN_MUL_COMBA4' "" \
+        --replace-fail '#define HAVE_BN_MUL_COMBA8' "" \
+        --replace-fail '#define HAVE_BN_MULW_ADD_WORDS' "" \
+        --replace-fail '#define HAVE_BN_MULW_WORDS' "" \
+        --replace-fail '#define HAVE_BN_SQR_COMBA4' "" \
+        --replace-fail '#define HAVE_BN_SQR_COMBA8' "" \
+        --replace-fail '#define HAVE_BN_SUB_WORDS' ""
+    '';
   };
 }
