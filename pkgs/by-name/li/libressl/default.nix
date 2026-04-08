@@ -42,6 +42,11 @@ let
       ]
       ++ lib.optional buildShared "-DBUILD_SHARED_LIBS=ON";
 
+      env.NIX_CFLAGS_COMPILE = lib.concatStringsSep " " [
+        "-D_TIME_BITS=64"
+        "-D_FILE_OFFSET_BITS=64"
+      ];
+
       # The autoconf build is broken as of 2.9.1, resulting in the following error:
       # libressl-2.9.1/tls/.libs/libtls.a', needed by 'handshake_table'.
       # Fortunately LibreSSL provides a CMake build as well, so opt for CMake by
