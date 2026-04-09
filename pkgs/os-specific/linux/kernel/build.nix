@@ -504,11 +504,12 @@ lib.makeOverridable (
         export HOME=${installkernel}
       '';
 
-    preFixup = ''
-      if [ -z "''${dontStrip-}" -a -e $out/vmlinux ]; then
-        strip -v -S -p $out/vmlinux
-      fi
-    '';
+    # Added by 99bf69cd043d30c8a913827a013f689a95d68763
+    # preFixup = ''
+    #   if [ -z "''${dontStrip-}" -a -e $out/vmlinux ]; then
+    #     strip -v -S -p $out/vmlinux
+    #   fi
+    # '';
 
     requiredSystemFeatures = [ "big-parallel" ];
 
