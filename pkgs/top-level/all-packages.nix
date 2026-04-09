@@ -9055,6 +9055,7 @@ with pkgs;
     ubootOrangePiZero
     ubootOrangePiZero2
     ubootOrangePiZero3
+    ubootP2041RDB
     ubootPcduino3Nano
     ubootPine64
     ubootPine64LTS

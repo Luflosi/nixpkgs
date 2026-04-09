@@ -625,6 +625,12 @@ in
     ];
   };
 
+  ubootP2041RDB = buildUBoot {
+    defconfig = "P2041RDB_defconfig";
+    extraMeta.platforms = [ "powerpc-linux" ];
+    filesToInstall = [ "u-boot.bin" ];
+  };
+
   ubootPcduino3Nano = buildUBoot {
     defconfig = "Linksprite_pcDuino3_Nano_defconfig";
     extraMeta.platforms = [ "armv7l-linux" ];
