@@ -41,7 +41,8 @@ rec {
       name = "powerpc32";
 
       baseConfig = "pmac32_defconfig";
-      target = "vmlinux";
+      # target = "vmlinux";
+      target = "uImage";
       autoModules = true;
     };
   };
