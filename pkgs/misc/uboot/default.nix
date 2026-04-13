@@ -689,6 +689,12 @@ in
     filesToInstall = [ "u-boot.bin" ];
   };
 
+  ubootQemuPpce500 = buildUBoot {
+    defconfig = "qemu-ppce500_defconfig";
+    extraMeta.platforms = [ "powerpc-linux" ];
+    filesToInstall = [ "u-boot" ];
+  };
+
   ubootQemuRiscv64Smode = buildUBoot {
     defconfig = "qemu-riscv64_smode_defconfig";
     extraMeta.platforms = [ "riscv64-linux" ];

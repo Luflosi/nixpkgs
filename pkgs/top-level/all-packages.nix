@@ -9063,6 +9063,7 @@ with pkgs;
     ubootPinebookPro
     ubootQemuAarch64
     ubootQemuArm
+    ubootQemuPpce500
     ubootQemuRiscv64Smode
     ubootQemuX86
     ubootQemuX86_64
