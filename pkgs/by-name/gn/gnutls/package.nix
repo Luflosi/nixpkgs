@@ -117,6 +117,10 @@ stdenv.mkDerivation rec {
   # https://gitlab.com/gnutls/gnutls/-/issues/1721
   + ''
     sed '2iexit 77' -i tests/system-override-compress-cert.sh
+  ''
+  # Fixes https://github.com/NixOS/nixpkgs/issues/493526
+  + ''
+    touch doc/stamp_error_codes
   '';
 
   preConfigure = "patchShebangs .";
