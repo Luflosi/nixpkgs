@@ -547,10 +547,11 @@ lib.makeOverridable (
             "arm"
             "arm64"
             "parisc"
+            "powerpc"
             "riscv"
           ]
         then
-          "zinstall"
+          builtins.trace "zinstall" "zinstall"
         else
           "install"
       )
