@@ -539,7 +539,7 @@ lib.makeOverridable (
     # Some image types need special install targets (e.g. uImage is installed with make uinstall on arm)
     installTargets = [
       (stdenv.hostPlatform.linux-kernel.installTarget or (
-        if target == "uImage" && stdenv.hostPlatform.linuxArch == "arm" then
+        if target == "uImage" then
           "uinstall"
         else if
           (target == "zImage" || target == "Image.gz" || target == "vmlinuz.efi")
