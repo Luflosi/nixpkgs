@@ -631,6 +631,12 @@ in
     filesToInstall = [ "u-boot.bin" ];
   };
 
+  ubootP2041RDB_SDCARD = buildUBoot {
+    defconfig = "P2041RDB_SDCARD_defconfig";
+    extraMeta.platforms = [ "powerpc-linux" ];
+    filesToInstall = [ "u-boot.pbl" ];
+  };
+
   ubootPcduino3Nano = buildUBoot {
     defconfig = "Linksprite_pcDuino3_Nano_defconfig";
     extraMeta.platforms = [ "armv7l-linux" ];
