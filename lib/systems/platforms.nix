@@ -42,7 +42,7 @@ rec {
 
       baseConfig = "pmac32_defconfig";
       # target = "vmlinux";
-      target = "uImage";
+      target = "Image";
       autoModules = true;
     };
   };
