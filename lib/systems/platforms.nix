@@ -39,10 +39,11 @@ rec {
   ppc32 = {
     linux-kernel = {
       name = "powerpc32";
-
-      baseConfig = "pmac32_defconfig";
-      target = "vmlinux";
+      baseConfig = "corenet32_smp_defconfig";
+      DTB = true;
       autoModules = true;
+      preferBuiltin = true;
+      target = "vmlinux";
     };
   };
 
