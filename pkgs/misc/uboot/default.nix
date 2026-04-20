@@ -698,6 +698,24 @@ in
   ubootQemuPpce500 = buildUBoot {
     defconfig = "qemu-ppce500_defconfig";
     extraMeta.platforms = [ "powerpc-linux" ];
+    postPatch = ''
+      substituteInPlace boot/image-board.c --replace-fail \
+        'ERROR with allocation of cmdline' \
+        'ERROR with allocation of cmdline 1'
+      substituteInPlace arch/powerpc/lib/bootm.c --replace-fail \
+        'ERROR with allocation of cmdline' \
+        'ERROR with allocation of cmdline 2'
+    '';
+    extraConfig = ''
+      CONFIG_CMD_FAT=y
+      CONFIG_SYS_BOOTM_LEN=0x10000000
+      CONFIG_API=y
+      CONFIG_OF_BOARD=y
+      CONFIG_SYS_BOOT_GET_CMDLINE=y
+      CONFIG_SYS_BARGSIZE=1
+      CFG_SYS_BOOTMAPSZ=40000000
+      CONFIG_LEGACY_IMAGE_FORMAT=y
+    '';
     filesToInstall = [ "u-boot" ];
   };
 

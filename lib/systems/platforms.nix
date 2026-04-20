@@ -41,9 +41,10 @@ rec {
       name = "corenet32_smp";
       baseConfig = "corenet32_smp_defconfig";
       DTB = true;
-      autoModules = true;
-      preferBuiltin = true;
-      target = "vmlinux";
+      autoModules = false;
+      # preferBuiltin = true;
+      target = "uImage";
+      installTarget = "install";
     };
     gcc = {
       # abi = "elfv2";

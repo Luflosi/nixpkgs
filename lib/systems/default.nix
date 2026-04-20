@@ -218,7 +218,7 @@ let
           processor =
             if final.isPower64 then
               "ppc64${optionalString final.isLittleEndian "le"}"
-            else if final.isPower then
+            else if final.isPower32 then
               "ppc${optionalString final.isLittleEndian "le"}"
             else if final.isMips64 then
               "mips64" # endianness is *not* included on mips64
@@ -296,7 +296,7 @@ let
           else if final.isMips64 then
             "mips" # linux kernel does not distinguish mips32/mips64
           else if final.isPower then
-            "powerpc"
+            "powerpc" # linux kernel does not distinguish powerpc32/powerpc64
           else if final.isRiscV then
             "riscv"
           else if final.isS390 then
