@@ -235,6 +235,9 @@ lib.makeOverridable (
       stdenv.hostPlatform.linux-kernel.target
       "vmlinux" # for "perf" and things like that
       "scripts_gdb"
+      "modules"
+      "zImage"
+      "uImage"
     ]
     ++ optional isModular "modules"
     ++ optionals buildDTBs [
@@ -250,6 +253,7 @@ lib.makeOverridable (
     ++ optionals buildDTBs [
       "dtbs_install"
       "INSTALL_DTBS_PATH=${placeholder "out"}/dtbs"
+      "KBUILD_IMAGE=$(boot)/zImage"
     ];
 
     depsBuildBuild = [ buildPackages.stdenv.cc ];
@@ -505,11 +509,14 @@ lib.makeOverridable (
       '';
 
     # Added by 99bf69cd043d30c8a913827a013f689a95d68763
-    # preFixup = ''
+    preFixup = ''
     #   if [ -z "''${dontStrip-}" -a -e $out/vmlinux ]; then
     #     strip -v -S -p $out/vmlinux
     #   fi
-    # '';
+      if [ -z "''${dontStrip-}" -a -e $out/zImage ]; then
+        strip -s $out/zImage
+      fi
+    '';
 
     requiredSystemFeatures = [ "big-parallel" ];
 
