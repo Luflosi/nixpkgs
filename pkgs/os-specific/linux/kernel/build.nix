@@ -141,6 +141,7 @@ lib.makeOverridable (
       "sparc"
       "xtensa"
     ];
+    # needsUbootTools = lib.elem stdenv.hostPlatform.linuxArch linuxPlatformsUsingUImage;
     needsUbootTools = true;
 
     config =
