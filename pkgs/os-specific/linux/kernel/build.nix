@@ -234,11 +234,11 @@ lib.makeOverridable (
     buildFlags = [
       "KBUILD_BUILD_VERSION=1-NixOS"
       stdenv.hostPlatform.linux-kernel.target
+      "zImage"
       "vmlinux" # for "perf" and things like that
       "scripts_gdb"
-      "modules"
-      "zImage"
-      "uImage"
+      # "modules"
+      # "uImage"
     ]
     ++ optional isModular "modules"
     ++ optionals buildDTBs [
