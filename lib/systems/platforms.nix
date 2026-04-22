@@ -38,11 +38,14 @@ rec {
 
   ppc32 = {
     linux-kernel = {
-      name = "powerpc32";
-
-      baseConfig = "pmac32_defconfig";
+      name = "corenet32_smp";
+      baseConfig = "corenet32_smp_defconfig";
       target = "vmlinux";
       autoModules = true;
+    };
+    gcc = {
+      # abi = "elfv2";
+      cpu = "e500mc";
     };
   };
 
