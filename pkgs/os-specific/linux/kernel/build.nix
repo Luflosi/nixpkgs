@@ -235,6 +235,7 @@ lib.makeOverridable (
       stdenv.hostPlatform.linux-kernel.target
       "vmlinux" # for "perf" and things like that
       "scripts_gdb"
+      "uImage"
     ]
     ++ optional isModular "modules"
     ++ optionals buildDTBs [
