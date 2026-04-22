@@ -1,3 +1,4 @@
+# TODO: use router advertisements, should fail to get IP address due to firewall
 { pkgs, lib, ... }:
 let
   inherit (import ./ssh-keys.nix pkgs) snakeOilPrivateKey snakeOilPublicKey;

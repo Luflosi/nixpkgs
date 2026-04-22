@@ -376,7 +376,7 @@ lib.makeOverridable (
       cd $buildRoot
     '';
 
-    postInstall = optionalString isModular ''
+    postInstall = optionalString isModular /* bash */ ''
       mkdir -p $dev
       cp vmlinux $dev/
 
