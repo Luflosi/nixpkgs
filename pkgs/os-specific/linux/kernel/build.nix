@@ -502,7 +502,7 @@ lib.makeOverridable (
         '';
       in
       ''
-        '${tree}'
+        '${lib.getExe tree}'
         installFlags+=("-j$NIX_BUILD_CORES")
         export HOME=${installkernel}
       '';
