@@ -291,7 +291,7 @@ lib.makeOverridable (
     };
 
     makeFlags = [
-      # "O=$(buildRoot)"
+      "O=$(buildRoot)"
 
       # We have a `modules` variable in the environment for our
       # split output, but the kernel Makefiles also define their
