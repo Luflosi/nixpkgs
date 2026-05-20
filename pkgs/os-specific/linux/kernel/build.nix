@@ -372,7 +372,10 @@ lib.makeOverridable (
       cd $buildRoot
     '';
 
-    postInstall = optionalString isModular ''
+    postInstall = ''
+      cp -a arch/powerpc/boot/uImage "$out/" || true
+      echo '###################################################'
+    '' + optionalString isModular ''
       mkdir -p $dev
       cp vmlinux $dev/
 
@@ -503,8 +506,6 @@ lib.makeOverridable (
       ''
         installFlags+=("-j$NIX_BUILD_CORES")
         export HOME=${installkernel}
-        cp -a arch/powerpc/boot/uImage "$out" || true
-        echo '###################################################'
       '';
 
     # Added by 99bf69cd043d30c8a913827a013f689a95d68763
