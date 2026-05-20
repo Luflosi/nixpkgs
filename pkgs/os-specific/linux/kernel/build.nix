@@ -3,7 +3,6 @@
   stdenv,
   buildPackages,
   bc,
-  tree,
   bison,
   flex,
   perl,
@@ -502,7 +501,6 @@ lib.makeOverridable (
         '';
       in
       ''
-        '${lib.getExe tree}'
         installFlags+=("-j$NIX_BUILD_CORES")
         export HOME=${installkernel}
       '';
