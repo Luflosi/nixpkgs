@@ -40,7 +40,7 @@ rec {
     linux-kernel = {
       name = "corenet32_smp";
       baseConfig = "corenet32_smp_defconfig";
-      target = "vmlinux";
+      target = "uImage";
       autoModules = true;
     };
     gcc = {
