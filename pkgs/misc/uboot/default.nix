@@ -699,6 +699,9 @@ in
     defconfig = "qemu-ppce500_defconfig";
     extraMeta.platforms = [ "powerpc-linux" ];
     filesToInstall = [ "u-boot" ];
+    extraConfig = /* config */ ''
+      CONFIG_BOOTCOMMAND="setenv kernel_addr_r 0x42000000; setenv ramdisk_addr_r 0x48080000; bootflow scan"
+    '';
   };
 
   ubootQemuRiscv64Smode = buildUBoot {
