@@ -1,0 +1,13 @@
+diff --git a/boot/bootm.c b/boot/bootm.c
+index 4bdca22ea8c..6a513b268b1 100644
+--- a/boot/bootm.c
++++ b/boot/bootm.c
+@@ -581,7 +581,7 @@ static int handle_decomp_error(int comp_type, size_t uncomp_size,
+ 
+ 	if ((comp_type == IH_COMP_GZIP && ret == Z_BUF_ERROR) ||
+ 	    uncomp_size >= buf_size)
+-		printf("Image too large: increase CONFIG_SYS_BOOTM_LEN\n");
++		printf("Image too large: increase CONFIG_SYS_BOOTM_LEN to 0x%lx\n", uncomp_size);
+ 	else
+ 		printf("%s: uncompress error %d\n", name, ret);
+ 
