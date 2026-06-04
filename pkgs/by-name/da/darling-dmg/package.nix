@@ -2,8 +2,9 @@
   lib,
   stdenv,
   fetchFromGitHub,
+  fetchpatch2,
   cmake,
-  fuse,
+  fuse3,
   zlib,
   bzip2,
   openssl,
@@ -25,9 +26,18 @@ stdenv.mkDerivation {
     hash = "sha256-8jk8018S8U0aaNiUoAiYy06Uk28+BaJDS+dpeLJDpAM=";
   };
 
+  patches = [
+    (fetchpatch2 {
+      name = "Enable fuse3 support.patch";
+      # https://github.com/darlinghq/darling-dmg/pull/108
+      url = "https://github.com/darlinghq/darling-dmg/commit/bce2b6fc76cd43446b41e6fb0cb2935721b49105.patch?full_index=1";
+      hash = "sha256-j1qwXpUxtsshNfnk5uMccP+Xf8fuhcP2AeKhxzH6/Ts=";
+    })
+  ];
+
   nativeBuildInputs = [ cmake ];
   buildInputs = [
-    fuse
+    fuse3
     openssl
     zlib
     bzip2
